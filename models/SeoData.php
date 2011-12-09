@@ -25,6 +25,8 @@
  */
 class SeoData extends CActiveRecord
 {
+        private $_translator;
+        
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return SeoData the static model class
@@ -61,11 +63,22 @@ class SeoData extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'model_name' => 'Model Name',
-			'model_id' => 'Model',
-			'title' => 'Title',
-			'keywords' => 'Keywords',
-			'description' => 'Description',
+			'title' => $this->translator->translate('seo', 'Page title'),
+			'keywords' => $this->translator->translate('seo', 'Page meta keywords'),
+			'description' => $this->translator->translate('seo', 'Page meta description'),
 		);
 	}
+        
+        /**
+	 * @return CPhpMessageSource
+	 */
+        public function getTranslator()
+        {
+            if(!$this->_translator)
+            {
+                $this->_translator = new CPhpMessageSource();
+                $this->_translator->basePath = Yii::getPathOfAlias('ext.YiiSEOBehavior.messages');
+            }
+            return $this->_translator;
+        }
 }

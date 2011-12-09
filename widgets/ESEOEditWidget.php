@@ -20,11 +20,8 @@ class ESEOEditWidget extends CWidget
         
 	public function run()
 	{
-                $translator = new CPhpMessageSource();
-                $translator->basePath = Yii::getPathOfAlias('ext.YiiSEOBehavior.messages');
                 $this->render('ESEOEditWidget', array(
                     'model' => $this->model,
-                    'translator' => $translator,
                 ));
 	}
 }
