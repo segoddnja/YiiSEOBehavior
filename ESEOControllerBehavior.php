@@ -23,10 +23,10 @@ class ESEOControllerBehavior extends CBehavior
         //if seo data presents for model, then register it for page
         if(!$seoData->isNewRecord)
         {
-            $this->owner->setPageTitle($seoData->title);
+            $this->owner->setPageTitle(CHtml::encode($seoData->title));
             Yii::app()->clientScript
-                    ->registerMetaTag($seoData->keywords, 'keywords', 'keywords')
-                    ->registerMetaTag($seoData->description, 'description', 'description');
+                    ->registerMetaTag(CHtml::encode($seoData->keywords), 'keywords', 'keywords')
+                    ->registerMetaTag(CHtml::encode($seoData->description), 'description', 'description');
         }    
     }
 }
