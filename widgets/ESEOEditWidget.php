@@ -15,15 +15,12 @@
 
 class ESEOEditWidget extends CWidget
 {       
-        //parent form
-        public $form;
         //model for editing
         public $model;
         
 	public function run()
 	{
                 $this->render('ESEOEditWidget', array(
-                    'form' => $this->form,
                     'model' => $this->model
                 ));
 	}

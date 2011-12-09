@@ -17,12 +17,21 @@ Yii::import('ext.YiiSEOBehavior.models.*');
 
 class ESEOModelBehavior extends CActiveRecordBehavior
 {
-    //seo data for current owner
+    /**
+     * @var SeoData seo data for current owner
+     */
     private $_seoData;
     
     public function afterSave($event) 
     {
-        $this->_seoData->save();
+        if(isset($_POST['SeoData']))
+        {
+            $this->seoData->attributes = $_POST['SeoData'];
+        }
+        if($this->seoData->title || $this->seoData->keywords || $this->seoData->description)
+            $this->seoData->save();
+        else 
+            $this->seoData->delete();
         return parent::afterSave($event);
     }
     
