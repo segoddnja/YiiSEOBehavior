@@ -17,26 +17,41 @@ Yii::import('ext.YiiSEOBehavior.models.*');
 
 class ESEOModelBehavior extends CActiveRecordBehavior
 {
+    //seo data for current owner
+    private $_seoData;
+    
     public function afterSave($event) 
     {
-        $ownerPK = $this->getOwnerPK();
-        $ownerClass = get_class($this->owner);
-        //gets SEO data for owner model
-        $seoData = SeoData::model()->findByPk(array(
-            'model_name' => $ownerClass,
-            'model_id' => $ownerPK
-        ));
-        //if no SEO data, then create new record
-        if(!$seoData)
+        $this->_seoData->save();
+        return parent::afterSave($event);
+    }
+    
+    /*
+     * return SeoData model for current owner
+     * @return SeoData
+     */
+    public function getSeoData()
+    {
+        if(!$this->_seoData)
         {
-            $seoData = new SeoData();
-            $seoData->setAttributes(array(
+            $ownerPK = $this->getOwnerPK();
+            $ownerClass = get_class($this->owner);
+            //gets SEO data for owner model
+            $this->_seoData = SeoData::model()->findByPk(array(
                 'model_name' => $ownerClass,
                 'model_id' => $ownerPK
             ));
+            //if no SEO data, then create new record
+            if(!$this->_seoData)
+            {
+                $this->_seoData = new SeoData();
+                $this->_seoData->setAttributes(array(
+                    'model_name' => $ownerClass,
+                    'model_id' => $ownerPK
+                ));
+            }
         }
-        $seoData->save();
-        return parent::afterSave($event);
+        return $this->_seoData;
     }
     
     /*
