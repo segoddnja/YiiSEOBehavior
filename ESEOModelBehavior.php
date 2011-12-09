@@ -13,7 +13,6 @@
  * @version 1.0
  * @package YiiSeoBehavior
  */
-Yii::import('ext.YiiSEOBehavior.models.*');
 
 class ESEOModelBehavior extends CActiveRecordBehavior
 {
@@ -41,6 +40,9 @@ class ESEOModelBehavior extends CActiveRecordBehavior
      */
     public function getSeoData()
     {
+        $class=new ReflectionClass('ESEOModelBehavior');
+        Yii::setPathOfAlias('YiiSEOBehavior.models', dirname($class->getFileName()).DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR);
+        Yii::import('YiiSEOBehavior.models');
         if(!$this->_seoData)
         {
             $ownerPK = $this->getOwnerPK();
