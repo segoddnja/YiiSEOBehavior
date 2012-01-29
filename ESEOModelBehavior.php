@@ -13,7 +13,7 @@
  * @version 1.0
  * @package YiiSeoBehavior
  */
-Yii::import('ext.YiiSEOBehavior.models.*');
+require_once 'models/SeoData.php';
 class ESEOModelBehavior extends CActiveRecordBehavior
 {
     /**
