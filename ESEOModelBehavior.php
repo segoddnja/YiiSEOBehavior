@@ -30,7 +30,8 @@ class ESEOModelBehavior extends CActiveRecordBehavior
         if($this->seoData->title || $this->seoData->keywords || $this->seoData->description)
             $this->seoData->save();
         else 
-            $this->seoData->delete();
+            if($this->seoData->isNewRecord === false)
+                $this->seoData->delete();
         return parent::afterSave($event);
     }
     
@@ -45,10 +46,11 @@ class ESEOModelBehavior extends CActiveRecordBehavior
             $ownerPK = $this->getOwnerPK();
             $ownerClass = get_class($this->owner);
             //gets SEO data for owner model
-            $this->_seoData = SeoData::model()->findByPk(array(
-                'model_name' => $ownerClass,
-                'model_id' => $ownerPK
-            ));
+            if($ownerPK != null)
+                $this->_seoData = SeoData::model()->findByPk(array(
+                    'model_name' => $ownerClass,
+                    'model_id' => $ownerPK
+                ));
             //if no SEO data, then create new record
             if(!$this->_seoData)
             {
